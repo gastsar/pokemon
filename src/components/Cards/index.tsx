@@ -1,23 +1,35 @@
 import { FiHeart } from "react-icons/fi";
 import { GoHeartFill } from "react-icons/go";
 
+interface PokemonType {
+  name: string;
+  image: string;
+}
+
 interface PokemonProps {
   name: string;
-  type: string[];
+  image: string;
+  apiTypes: PokemonType[]; // Utilisation de l'objet Pokémon Type
   favorite: boolean;
   onToggleFavorite: () => void;
 }
 
-const Cards = ({ name, type, favorite, onToggleFavorite }: PokemonProps) => {
+const Cards = ({
+  name,
+  image,
+  apiTypes,
+  favorite,
+  onToggleFavorite,
+}: PokemonProps) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer">
       <div className="relative">
         <img
-          src="https://placehold.it/200x200"
+          src={image}
           alt={name}
           width={200}
           height={200}
-          className="w-full h-48 object-cover"
+          className="w-1/2 m-auto h-48 object-cover"
           style={{ aspectRatio: "200/200", objectFit: "cover" }}
         />
         <button
@@ -34,12 +46,12 @@ const Cards = ({ name, type, favorite, onToggleFavorite }: PokemonProps) => {
       <div className="p-4">
         <h3 className="text-lg font-bold">{name}</h3>
         <ul className="flex flex-wrap gap-2 mt-2">
-          {type.map((type) => (
+          {apiTypes.map((type) => (
             <li
-              key={type}
+              key={type.name}
               className="text-sm text-gray-500 border rounded-xl px-2"
             >
-              {type}
+              {type.name}
             </li>
           ))}
         </ul>
