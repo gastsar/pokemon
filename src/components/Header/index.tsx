@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { FiTrash2 } from "react-icons/fi";
 import { GoHeartFill } from "react-icons/go";
 import { IoFilterCircleOutline } from "react-icons/io5";
-import { FiTrash2 } from "react-icons/fi";
 
 interface HeaderProps {
   uniqueTypes: string[];
@@ -10,13 +10,16 @@ interface HeaderProps {
   onTypeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   favorites: Pokemon[];
-  onRemoveFavorite: (id: number) => void; // Fonction pour supprimer des favoris
+  onRemoveFavorite: (id: number) => void;
 }
 
 interface Pokemon {
   name: string;
   id: number;
-  type: string[];
+  apiTypes: {
+    name: string;
+    image: string;
+  }[];
 }
 
 const Header = ({

@@ -1,19 +1,25 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import "./App.css";
 import Cards from "./components/Cards";
 import Header from "./components/Header";
-import pokemons from "./data";
-
-interface Pokemon {
-  name: string;
-  type: string[];
-  id: number;
-}
+import Pokemon from "./interface";
+import Modal from "./components/Modal";
 
 function App() {
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [selectedType, setSelectedType] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [favorites, setFavorites] = useState<number[]>([]); // État pour les favoris
+  const [favorites, setFavorites] = useState<number[]>([]);
+  const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
+
+  useEffect(() => {
+    async function getData() {
+      const response = await fetch("https://pokebuildapi.fr/api/v1/pokemon/");
+      const data = await response.json();
+      setPokemons(data);
+    }
+    getData();
+  }, []);
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(event.target.value);
@@ -37,13 +43,25 @@ function App() {
     );
   };
 
+  const handlePokemonClick = (pokemon: Pokemon) => {
+    setSelectedPokemon(pokemon);
+  };
+
+  const handleModalClose = () => {
+    setSelectedPokemon(null);
+  };
+
   const uniqueTypes = useMemo(() => {
-    return Array.from(new Set(pokemons.flatMap((pokemon) => pokemon.type)));
+    const allTypes = pokemons.flatMap((pokemon) =>
+      pokemon.apiTypes.map((type) => type.name)
+    );
+    return Array.from(new Set(allTypes));
   }, [pokemons]);
 
   const filteredPokemons = pokemons.filter((pokemon) => {
     const matchesType =
-      selectedType === "all" || pokemon.type.includes(selectedType);
+      selectedType === "all" ||
+      pokemon.apiTypes.some((type) => type.name === selectedType);
     const matchesSearchTerm = pokemon.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -55,7 +73,11 @@ function App() {
   );
 
   const listPokemons = filteredPokemons.map((pokemon: Pokemon) => (
-    <li key={pokemon.id}>
+    <li
+      key={pokemon.id}
+      className="cursor-pointer"
+      onClick={() => handlePokemonClick(pokemon)}
+    >
       <Cards
         {...pokemon}
         favorite={favorites.includes(pokemon.id)}
@@ -72,13 +94,17 @@ function App() {
         searchTerm={searchTerm}
         onTypeChange={handleTypeChange}
         onSearchChange={handleSearchChange}
-        favorites={favoritePokemons} // Passer les favoris au composant Header
-        onRemoveFavorite={removeFavorite} // Ajouter la fonction de suppression des favoris
+        favorites={favoritePokemons}
+        onRemoveFavorite={removeFavorite}
       />
-      <main></main>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {listPokemons}
-      </ul>
+      <main>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {listPokemons}
+        </ul>
+        {selectedPokemon && (
+          <Modal pokemon={selectedPokemon} onClose={handleModalClose} />
+        )}
+      </main>
     </>
   );
 }
