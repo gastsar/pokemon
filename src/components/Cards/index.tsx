@@ -4,12 +4,11 @@ import { GoHeartFill } from "react-icons/go";
 interface PokemonProps {
   name: string;
   type: string[];
+  favorite: boolean;
+  onToggleFavorite: () => void;
 }
 
-const Cards = (
-  { name, type }: PokemonProps,
-  { favorite }: { favorite: boolean }
-) => {
+const Cards = ({ name, type, favorite, onToggleFavorite }: PokemonProps) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer">
       <div className="relative">
@@ -21,11 +20,14 @@ const Cards = (
           className="w-full h-48 object-cover"
           style={{ aspectRatio: "200/200", objectFit: "cover" }}
         />
-        <button className="absolute top-2 right-2 text-primary">
+        <button
+          className="absolute top-2 right-2 text-primary"
+          onClick={onToggleFavorite}
+        >
           {!favorite ? (
             <FiHeart className="w-6 h-6 hover:text-red-500" />
           ) : (
-            <GoHeartFill className="w-6 h-6 hover:text-red-500" />
+            <GoHeartFill className="w-6 h-6 text-red-500" />
           )}
         </button>
       </div>
