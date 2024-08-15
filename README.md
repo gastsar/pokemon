@@ -100,7 +100,7 @@ L'application utilise l'API [PokéBuild](https://pokebuildapi.fr/api/v1) pour r�
 
 ## Contribution
 
-J'améliorerai le codebase en intégrant Redux pour une meilleure gestion de l'état global de l'application. De plus, je travaillerai à bien séparer les différents composants pour rendre le code plus modulaire et maintenable.
+J'améliorerai le codebase en intégrant Redux pour une meilleure gestion de l'état global de l'application , utiliser d'autre hooks natifs de react. De plus, je travaillerai à bien séparer les différents composants pour rendre le code plus modulaire et maintenable.
 
 Je m'exerce à utiliser GitHub avec ce projet, donc toutes les contributions sont les bienvenues ! Si vous souhaitez améliorer ce projet, n'hésitez pas à créer une pull request ou à ouvrir une issue sur GitHub.
 
