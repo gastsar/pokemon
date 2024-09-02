@@ -24,14 +24,14 @@ const Cards = ({
   onhandlePokemonClick,
 }: PokemonProps) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden ">
       <div className="relative">
         <img
           src={image}
           alt={name}
           width={200}
           height={200}
-          className="w-1/2 m-auto h-48 object-cover"
+          className="w-1/2 m-auto h-48 object-cover cursor-pointer"
           style={{ aspectRatio: "200/200", objectFit: "cover" }}
           onClick={onhandlePokemonClick}
         />

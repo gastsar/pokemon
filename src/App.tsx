@@ -74,7 +74,7 @@ function App() {
   );
 
   const listPokemons = filteredPokemons.map((pokemon: Pokemon) => (
-    <li key={pokemon.id} className="cursor-pointer">
+    <li key={pokemon.id}>
       <Cards
         {...pokemon}
         favorite={favorites.includes(pokemon.id)}
@@ -97,7 +97,14 @@ function App() {
       />
       <main className="w-full  h-96 relative">
         {loading ? (
-          <p className="loader"></p>
+          <div className="flex flex-col items-center justify-center h-full">
+            <span className="loader"></span>
+            <p className="text-center">
+              Le chargement peut prendre quelques secondes, veuillez patienter.
+              <br />
+              Des améliorations seront apporte par la suite
+            </p>
+          </div>
         ) : (
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {listPokemons}
