@@ -1,9 +1,9 @@
-import { useState, useMemo, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import Cards from "./components/Cards";
 import Header from "./components/Header";
-import Pokemon from "./interface";
 import Modal from "./components/Modal";
+import Pokemon from "./interface";
 
 function App() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -11,12 +11,13 @@ function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [favorites, setFavorites] = useState<number[]>([]);
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function getData() {
       const response = await fetch("https://pokebuildapi.fr/api/v1/pokemon/");
       const data = await response.json();
       setPokemons(data);
+      setLoading(false);
     }
     getData();
   }, []);
@@ -73,15 +74,12 @@ function App() {
   );
 
   const listPokemons = filteredPokemons.map((pokemon: Pokemon) => (
-    <li
-      key={pokemon.id}
-      className="cursor-pointer"
-      onClick={() => handlePokemonClick(pokemon)}
-    >
+    <li key={pokemon.id} className="cursor-pointer">
       <Cards
         {...pokemon}
         favorite={favorites.includes(pokemon.id)}
         onToggleFavorite={() => toggleFavorite(pokemon.id)}
+        onhandlePokemonClick={() => handlePokemonClick(pokemon)}
       />
     </li>
   ));
@@ -97,10 +95,15 @@ function App() {
         favorites={favoritePokemons}
         onRemoveFavorite={removeFavorite}
       />
-      <main>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {listPokemons}
-        </ul>
+      <main className="w-full  h-96 relative">
+        {loading ? (
+          <p className="loader"></p>
+        ) : (
+          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {listPokemons}
+          </ul>
+        )}
+
         {selectedPokemon && (
           <Modal pokemon={selectedPokemon} onClose={handleModalClose} />
         )}

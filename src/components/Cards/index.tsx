@@ -12,6 +12,7 @@ interface PokemonProps {
   apiTypes: PokemonType[]; // Utilisation de l'objet Pokémon Type
   favorite: boolean;
   onToggleFavorite: () => void;
+  onhandlePokemonClick: () => void;
 }
 
 const Cards = ({
@@ -20,6 +21,7 @@ const Cards = ({
   apiTypes,
   favorite,
   onToggleFavorite,
+  onhandlePokemonClick,
 }: PokemonProps) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer">
@@ -31,6 +33,7 @@ const Cards = ({
           height={200}
           className="w-1/2 m-auto h-48 object-cover"
           style={{ aspectRatio: "200/200", objectFit: "cover" }}
+          onClick={onhandlePokemonClick}
         />
         <button
           className="absolute top-2 right-2 text-primary"
